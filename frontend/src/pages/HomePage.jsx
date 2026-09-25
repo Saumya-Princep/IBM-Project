@@ -209,8 +209,10 @@ function HomePage() {
 
   // ── Derived values ─────────────────────────────────────────────────────────
   const totalXp = profile?.totalXp ?? 0;
-  const maxXp = 450;
-  const xpPct = Math.min(Math.round((totalXp / maxXp) * 100), 100);
+  const playerLevel = Math.max(1, Math.floor(totalXp / 100) + 1);
+  const totalCoins = profile?.totalCoins ?? 0;
+  const maxXp = playerLevel * 100;
+  const xpPct = Math.min(Math.round(((totalXp % 100) / 100) * 100), 100);
   const currentStreakCount = streak?.currentStreak ?? 0;
   const streakState = streak ? computeStreakState(streak) : null;
   const isAtRisk = streakState?.state === "at-risk";
@@ -614,7 +616,7 @@ function HomePage() {
               <div className="ql-profile-rank-row">
                 <span className="ql-profile-stage-badge">
                   {STAGES.find((s) => s.id === currentStageId)?.emoji ?? "🌱"}{" "}
-                  Lv.{user.level || 1} · {user.title || "Adventurer"}
+                  Lv.{playerLevel} · {user.title || "Adventurer"}
                 </span>
                 <span className="ql-profile-league-badge">Quest League A</span>
               </div>
@@ -624,21 +626,21 @@ function HomePage() {
                 <div
                   className="ql-profile-xp-bar"
                   role="progressbar"
-                  aria-valuenow={Math.min(100, Math.round(((user.xp || 0) / Math.max(1, maxXp)) * 100))}
+                  aria-valuenow={xpPct}
                   aria-valuemax={100}
-                  aria-label={`${user.xp || 0} of ${maxXp} XP`}
+                  aria-label={`${totalXp % 100} of 100 XP to next level`}
                 >
                   <div
                     className="ql-profile-xp-fill"
                     style={{
-                      width: `${Math.min(100, Math.round(((user.xp || 0) / Math.max(1, maxXp)) * 100))}%`,
+                      width: `${xpPct}%`,
                     }}
                   />
                 </div>
-                <span className="ql-profile-xp-val">{user.xp || 0}/{maxXp}</span>
+                <span className="ql-profile-xp-val">{totalXp % 100}/100</span>
               </div>
               <div className="ql-profile-coins">
-                🪙 {(user.coins ?? profile?.totalCoins ?? 0).toLocaleString()} coins
+                🪙 {totalCoins.toLocaleString()} coins
               </div>
 
             </>
@@ -716,6 +718,15 @@ function HomePage() {
             />
           </div>
           <p className="ql-daily-motivation">{dailyMotivation}</p>
+        </div>
+
+        {/* ── Slash 'n Learn Widget ───────────────────────────────────────────── */}
+        <div className="ql-slash-widget" onClick={() => navigate("/fruit-ninja")}>
+          <div className="ql-slash-widget-content">
+            <h3 className="ql-slash-title">🥷 Slash 'n Learn</h3>
+            <p className="ql-slash-desc">Play the quick-fire slicing quiz to earn XP and Bob Coins!</p>
+          </div>
+          <button className="primary ql-slash-btn">Play Now</button>
         </div>
 
         {/* ── Streak at-risk banner ─────────────────────────────────────────── */}

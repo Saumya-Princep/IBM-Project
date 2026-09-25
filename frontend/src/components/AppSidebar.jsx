@@ -12,7 +12,7 @@ const SIDEBAR_LINKS = [
   { label: "Streaks",         path: "/streak",           emoji: "🔥" },
   { label: "Mistake Museum",  path: "/museum",           emoji: "🏛️" },
   { label: "Dashboard",       path: "/dashboard",        emoji: "📊" },
-  { label: "Team Roles",      path: "/team",             emoji: "👥" },
+  { label: "Slash 'n Learn",     path: "/fruit-ninja",      emoji: "🥷" },
 ];
 
 function LogoutModal({ onConfirm, onCancel }) {

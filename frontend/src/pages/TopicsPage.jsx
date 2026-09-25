@@ -12,6 +12,7 @@ function TopicsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError]     = useState("");
   const [openTopic, setOpenTopic] = useState(null); // topic id that is expanded
+  const [infoTopic, setInfoTopic] = useState(null); // topic id whose info is expanded
 
   useEffect(() => {
     fetch("/api/topics")
@@ -55,19 +56,34 @@ function TopicsPage() {
                 key={topic.id}
                 className={`topic-card card-glass ${isOpen ? "topic-card--open" : ""}`}
               >
-                {/* Topic header (click to expand) */}
-                <button
-                  className="topic-card-header"
-                  onClick={() => setOpenTopic(isOpen ? null : topic.id)}
-                  aria-expanded={isOpen}
-                >
-                  <span className="topic-card-emoji">{topic.emoji}</span>
-                  <span className="topic-card-name">{topic.name}</span>
-                  <span className="topic-card-count">
-                    {topic.subtopics.length} subtopic{topic.subtopics.length !== 1 ? "s" : ""}
-                  </span>
-                  <span className="topic-card-chevron">{isOpen ? "▲" : "▼"}</span>
-                </button>
+                {/* Topic header */}
+                <div className="topic-card-header-wrapper">
+                  <button
+                    className="topic-card-header"
+                    onClick={() => setOpenTopic(isOpen ? null : topic.id)}
+                    aria-expanded={isOpen}
+                  >
+                    <span className="topic-card-emoji">{topic.emoji}</span>
+                    <span className="topic-card-name">{topic.name}</span>
+                    <span className="topic-card-count">
+                      {topic.subtopics.length} subtopic{topic.subtopics.length !== 1 ? "s" : ""}
+                    </span>
+                    <span className="topic-card-chevron">{isOpen ? "▲" : "▼"}</span>
+                  </button>
+                  <button 
+                    className="topic-info-btn"
+                    onClick={(e) => { e.stopPropagation(); setInfoTopic(infoTopic === topic.id ? null : topic.id); }}
+                    title="About this topic"
+                  >
+                    📖
+                  </button>
+                </div>
+
+                {infoTopic === topic.id && (
+                  <div className="topic-info-box">
+                    <p>{topic.info || "A collection of questions to test your knowledge."}</p>
+                  </div>
+                )}
 
                 {/* Subtopics list */}
                 {isOpen && (

@@ -64,11 +64,16 @@
   border-color: #6366f1;
 }
 
+.topic-card-header-wrapper {
+  display: flex;
+  align-items: stretch;
+}
+
 .topic-card-header {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  width: 100%;
+  flex: 1;
   background: transparent;
   border: none;
   padding: 1rem 1.25rem;
@@ -106,6 +111,45 @@
   font-size: 0.7rem;
   color: #64748b;
   margin-left: 0.25rem;
+}
+
+.topic-info-btn {
+  background: transparent;
+  border: none;
+  border-left: 1px solid rgba(45, 55, 72, 0.5);
+  padding: 0 1.25rem;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.topic-info-btn:hover {
+  background: rgba(99, 102, 241, 0.1);
+  color: #fff;
+}
+
+.topic-info-box {
+  padding: 1.25rem;
+  background: rgba(15, 23, 42, 0.6);
+  border-top: 1px solid rgba(45, 55, 72, 0.5);
+  color: #cbd5e1;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.topic-info-box strong {
+  display: block;
+  color: #f8fafc;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.topic-info-box p {
+  margin: 0;
 }
 
 /* ── Subtopics list ────────────────────────── */

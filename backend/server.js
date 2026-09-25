@@ -53,9 +53,24 @@ const questions = require("./data/questions.json");
 // Returns a random question from the given stageId pool.
 // -------------------------------------------------------
 app.get("/api/question", (req, res) => {
-  const { stageId } = req.query;
-  let pool = stageId ? questions.filter((q) => q.stageId === stageId) : [];
-  if (!pool.length) pool = [questions[0]];
+  const { stageId, maxOptionLength, maxQuestionLength } = req.query;
+  let pool = stageId ? questions.filter((q) => q.stageId === stageId) : questions;
+  
+  if (maxOptionLength) {
+    const limit = parseInt(maxOptionLength, 10);
+    pool = pool.filter(q => q.options && q.options.every(o => (o.text || o).length <= limit));
+  }
+  
+  if (maxQuestionLength) {
+    const limit = parseInt(maxQuestionLength, 10);
+    pool = pool.filter(q => q.question && q.question.length <= limit);
+  }
+  
+  if (req.query.singleLine === 'true') {
+    pool = pool.filter(q => q.question && !q.question.includes('\n'));
+  }
+  
+  if (!pool || !pool.length) pool = questions;
   const question = pool[Math.floor(Math.random() * pool.length)];
   if (!question) {
     return res.status(404).json({ error: "No question found." });
@@ -105,6 +120,16 @@ app.get("/api/questions/stage/:stageId", (req, res) => {
 // Returns all topics with their subtopics (no questions).
 // -------------------------------------------------------
 app.get("/api/topics", (req, res) => {
+  const topicInfoMap = {
+    "js-types": "JavaScript's type system is famously quirky, featuring dynamic typing and implicit coercion. This topic covers the core primitive types (String, Number, Boolean, Null, Undefined, Symbol) and how they interact. You'll also learn the critical differences between 'var', 'let', and 'const' for variable scoping, helping you avoid common legacy bugs.",
+    "js-functions": "Functions are first-class citizens in JavaScript, meaning they can be passed as arguments and returned from other functions. This section explores arrow function syntax, lexical scoping, and the notorious 'this' keyword. You'll dive deep into closures, which allow functions to remember their outer scope even after execution.",
+    "js-arrays": "Arrays in JavaScript are versatile list-like objects that come packed with powerful built-in methods. Here, you'll master declarative array methods like .map(), .filter(), and .reduce() to manipulate data elegantly. We'll also cover the difference between mutable and immutable operations, ensuring your data state remains predictable.",
+    "js-objects": "Objects are the foundational building blocks of nearly all JavaScript data structures. This topic demystifies object prototypes, the prototype chain, and how inheritance actually works under the hood. You'll also practice working with JSON, object destructuring, and managing property descriptors for advanced control.",
+    "js-advanced": "Take your JavaScript skills to the professional level by understanding the asynchronous Event Loop. You'll learn how the Call Stack and Task Queue handle non-blocking operations. This section covers Promises, the modern async/await syntax, and how to elegantly handle errors in complex, data-fetching applications.",
+    "cs-algorithms": "Algorithms are step-by-step procedures for solving computational problems efficiently. You'll learn to evaluate performance using Big O notation, understanding time and space complexity. We'll test your knowledge on essential sorting and searching algorithms, teaching you how to choose the right tool for performance-critical tasks.",
+    "cs-data-structures": "Data structures dictate how data is organized, stored, and accessed in memory. This topic explores the trade-offs between Arrays, Linked Lists, Hash Maps, and Trees. Understanding these structures is crucial for optimizing read/write speeds and writing software that scales gracefully under heavy data loads."
+  };
+
   const topicMap = {};
   for (const q of questions) {
     if (!q.topicId) continue;
@@ -113,6 +138,7 @@ app.get("/api/topics", (req, res) => {
         id: q.topicId,
         name: q.topicName ?? q.topicId,
         emoji: q.topicEmoji ?? "📚",
+        info: topicInfoMap[q.topicId] || "A collection of questions to test your knowledge.",
         subtopics: {},
       };
     }

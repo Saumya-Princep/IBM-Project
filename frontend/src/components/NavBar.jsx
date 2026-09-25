@@ -15,7 +15,7 @@ const SEARCH_ITEMS = [
   { label: "Streaks & Recovery", path: "/streak", category: "Activity", emoji: "🔥" },
   { label: "Mistake Museum", path: "/museum", category: "Review", emoji: "🏛️" },
   { label: "Learner Dashboard", path: "/dashboard", category: "Stats", emoji: "📊" },
-  { label: "Team Roles & Missions", path: "/team", category: "Social", emoji: "👥" },
+  { label: "Slash 'n Learn", path: "/fruit-ninja", category: "Game", emoji: "🥷" },
 ];
 
 function NavBar() {
@@ -27,9 +27,9 @@ function NavBar() {
   const [profile, setProfile] = useState(null);
   const [streak, setStreak] = useState(null);
 
-  // Search state
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
+  const [isXpHovered, setIsXpHovered] = useState(false);
   const searchRef = useRef(null);
 
   useEffect(() => {
@@ -166,17 +166,30 @@ function NavBar() {
         </button>
 
         {/* XP Counter Box */}
-        <button
-          className="navbar-stat-box navbar-stat-box--xp"
-          onClick={() => navigate("/dashboard")}
-          title="Total XP earned"
+        <div 
+          className="navbar-stat-box-wrapper"
+          onMouseEnter={() => setIsXpHovered(true)}
+          onMouseLeave={() => setIsXpHovered(false)}
         >
-          <div className="stat-avatar stat-avatar--xp">⚡</div>
-          <div className="stat-meta">
-            <span className="stat-name">Total XP</span>
-            <span className="stat-val">{totalXp.toLocaleString()}</span>
-          </div>
-        </button>
+          <button
+            className="navbar-stat-box navbar-stat-box--xp"
+            onClick={() => navigate("/dashboard")}
+            title="Click to view Dashboard"
+          >
+            <div className="stat-avatar stat-avatar--xp">⚡</div>
+            <div className="stat-meta">
+              <span className="stat-name">Total XP</span>
+              <span className="stat-val">{totalXp.toLocaleString()}</span>
+            </div>
+          </button>
+          
+          {isXpHovered && (
+            <div className="xp-hover-tooltip">
+              <div className="xp-tooltip-val">{(totalXp / 50).toFixed(2)} Bob Coins</div>
+              <div className="xp-tooltip-eq">50 XP = 1 Bob Coin</div>
+            </div>
+          )}
+        </div>
 
         {/* Auth Actions (Right Side) */}
         <div className="navbar-auth-section">
@@ -188,9 +201,9 @@ function NavBar() {
                 aria-expanded={profileDropdownOpen}
                 aria-label="User profile menu"
               >
-                <span className="navbar-avatar">{user.avatar || "⚔️"}</span>
+                <span className="navbar-avatar">{user.avatar || "🥷"}</span>
                 <span className="navbar-username">{user.gamerTag || user.name.split(" ")[0]}</span>
-                <span className="navbar-xp-tag">Lv.{user.level || 1} • {user.xp || 0} XP</span>
+                <span className="navbar-xp-tag">Lv.{playerLevel} • {totalXp} XP</span>
               </button>
 
               {profileDropdownOpen && (
@@ -202,8 +215,8 @@ function NavBar() {
                     </div>
                     <span className="dropdown-user-email">{user.email}</span>
                     <div className="dropdown-badge-row">
-                      <span className="dropdown-chip">🔥 {user.streak || 1} Day Streak</span>
-                      <span className="dropdown-chip">🪙 {user.coins || 0} Coins</span>
+                      <span className="dropdown-chip">🔥 {currentStreak} Day Streak</span>
+                      <span className="dropdown-chip">🪙 {totalCoins} Coins</span>
                     </div>
                   </div>
 

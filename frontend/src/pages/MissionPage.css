@@ -540,7 +540,11 @@
   letter-spacing: -0.01em;
 }
 
-/* ── Question text (code block) ──────────────────────────── */
+.question-text-container {
+  position: relative;
+  width: 100%;
+}
+
 .question-text {
   font-size: 0.95rem;
   line-height: 1.7;
@@ -549,10 +553,34 @@
   border: 1px solid var(--border);
   border-left: 3px solid #f59e0b;
   border-radius: var(--radius-sm);
-  padding: 1rem 1.25rem;
+  padding: 1rem 3.5rem 1rem 1.25rem; /* added right padding for the icon */
   margin-bottom: 1.5rem;
   white-space: pre-line;
   font-family: "Courier New", Courier, monospace;
+}
+
+.hint-toggle-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 0.35rem 0.5rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 2;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hint-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
 }
 
 .persona-hint {

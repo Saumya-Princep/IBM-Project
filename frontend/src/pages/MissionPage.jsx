@@ -93,6 +93,7 @@ function MissionPage() {
   const [splashCorrect, setSplashCorrect] = useState(false);
   const [timerRemaining, setTimerRemaining] = useState(MISSION_TIMER_SECONDS);
   const [timerActive, setTimerActive] = useState(false);
+  const [showHint, setShowHint] = useState(false);
   const timerRef = useRef(null);
   const questionStartRef = useRef(null);
   const questionNumberRef = useRef(1);
@@ -129,6 +130,7 @@ function MissionPage() {
     setExplanation("");
     setResult(null);
     setError("");
+    setShowHint(false);
     return fetch("/api/question", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -527,11 +529,22 @@ function MissionPage() {
         )}
 
         {/* Question block — styled differently per persona */}
-        <p className={`question-text question-text--${persona.id}`}>{question?.question}</p>
+        <div className="question-text-container">
+          <p className={`question-text question-text--${persona.id}`}>{question?.question}</p>
+          {question?.hint && (
+            <button 
+              className="hint-toggle-btn" 
+              onClick={() => setShowHint(!showHint)} 
+              title="Toggle Hint Cheat Sheet"
+            >
+              📖
+            </button>
+          )}
+        </div>
 
-        {question?.hint && (
+        {question?.hint && showHint && (
           <div className={`persona-hint persona-hint--${persona.id}`}>
-            <strong>{persona.emoji} Hint</strong>
+            <strong>{persona.emoji} Hint Cheat Sheet</strong>
             <span>{question.hint}</span>
           </div>
         )}

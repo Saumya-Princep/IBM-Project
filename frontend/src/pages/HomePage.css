@@ -1447,3 +1447,49 @@
   font-size: 1.25rem;
   font-weight: 800;
 }
+
+/* ── Slash 'n Learn Widget ────────────────────────────────────────────── */
+.ql-slash-widget {
+  background: linear-gradient(135deg, rgba(17, 17, 17, 0.9) 0%, rgba(30, 41, 59, 0.9) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.ql-slash-widget:hover {
+  transform: translateY(-2px);
+  border-color: rgba(245, 158, 11, 0.6);
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.15);
+}
+
+.ql-slash-widget-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ql-slash-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #f8fafc;
+  margin: 0;
+}
+
+.ql-slash-desc {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.ql-slash-btn {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 0.85rem;
+}

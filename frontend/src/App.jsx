@@ -17,7 +17,7 @@ import TopicsPage from "./pages/TopicsPage.jsx";
 import TopicQuizPage from "./pages/TopicQuizPage.jsx";
 import PostQuizResultsPage from "./pages/PostQuizResultsPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
-import TeamPage from "./pages/TeamPage.jsx";
+import FruitNinjaQuizPage from "./pages/FruitNinjaQuizPage.jsx";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -41,7 +41,7 @@ function AnimatedRoutes() {
         <Route path="/topics" element={<TopicsPage />} />
         <Route path="/quiz/:subtopicId" element={<TopicQuizPage />} />
         <Route path="/quiz-results" element={<PostQuizResultsPage />} />
-        <Route path="/team" element={<TeamPage />} />
+        <Route path="/fruit-ninja" element={<FruitNinjaQuizPage />} />
       </Routes>
     </AnimatePresence>
   );
